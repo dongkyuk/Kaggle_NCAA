@@ -1,0 +1,20 @@
+                   ID  Pred  Season  T1_TeamID  T2_TeamID
+0      2015_1107_1112   0.5    2015       1107       1112
+1      2015_1107_1116   0.5    2015       1107       1116
+2      2015_1107_1124   0.5    2015       1107       1124
+3      2015_1107_1125   0.5    2015       1107       1125
+4      2015_1107_1129   0.5    2015       1107       1129
+...               ...   ...     ...        ...        ...
+11385  2019_1449_1459   0.5    2019       1449       1459
+11386  2019_1449_1463   0.5    2019       1449       1463
+11387  2019_1458_1459   0.5    2019       1458       1459
+11388  2019_1458_1463   0.5    2019       1458       1463
+11389  2019_1459_1463   0.5    2019       1459       1463
+
+[11390 rows x 5 columns]
+Traceback (most recent call last):
+  File "submission.py", line 29, in <module>
+    submission_df = LogisticTeamRank(submission_df, seeds, regular_results).run()
+  File "/home/banner/bench-DK/data_preprocessing/other/.gaggle/Kaggle_NCAA/feature_engineer/feature.py", line 14, in run
+    return self.merge_features()
+TypeError: merge_features() missing 1 required positional argument: 'org_feature'
