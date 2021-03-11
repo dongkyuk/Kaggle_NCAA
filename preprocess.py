@@ -1,6 +1,8 @@
 import pandas as pd
 import numpy as np
+from utils.time_function import time_function
 
+@time_function
 def preprocess(tourney_results, regular_results):
     def duplicate_swap(df):
         ''' Duplicate data by swapping team

@@ -4,10 +4,12 @@ import statsmodels.api as sm
 from feature_engineer.feature import Feature
 
 class LogisticTeamRank(Feature):
-    def __init__(self, tourney_results, seeds, regular_results):
+    def __init__(self, tourney_results, seeds, regular_results, load=False):
         self.tourney_results = tourney_results
         self.seeds = seeds
         self.regular_results = regular_results
+        self.feature_save_path = 'data/features/LogisticTeamRank.csv'
+        self.load = load
 
     def team_quality(self, season):
         """
@@ -35,8 +37,9 @@ class LogisticTeamRank(Feature):
         return quality
 
     def make_features(self):
-        all_seasons = [self.team_quality(season) for season in range(2003, 2021)]
+        all_seasons = [self.team_quality(season) for season in range(2010, 2021)]
         self.feature = pd.concat(all_seasons).reset_index(drop=True)
+        self.feature.to_csv(self.feature_save_path, index=False)
 
     @staticmethod
     def merge_features_helper(tourney_results, team_quality, seeds):
@@ -64,8 +67,8 @@ class LogisticTeamRank(Feature):
         tourney_results = tourney_results.merge(seeds_T1, on = ['Season', 'T1_TeamID'], how = 'left')
         tourney_results = tourney_results.merge(seeds_T2, on = ['Season', 'T2_TeamID'], how = 'left')
 
-        tourney_results['T1_powerrank'] = tourney_results.groupby(['Season','T1_division'])['T1_quality'].rank(method='dense', ascending=False).astype(int)
-        tourney_results['T2_powerrank'] = tourney_results.groupby(['Season','T2_division'])['T2_quality'].rank(method='dense', ascending=False).astype(int)
+        tourney_results['T1_powerrank'] = tourney_results.groupby(['Season','T1_division'])['T1_quality'].rank(method='dense', ascending=False).dropna(how='all').astype(int)
+        tourney_results['T2_powerrank'] = tourney_results.groupby(['Season','T2_division'])['T2_quality'].rank(method='dense', ascending=False).dropna(how='all').astype(int)
         
         return tourney_results
 

@@ -2,15 +2,18 @@ import pandas as pd
 from feature_engineer.feature import Feature
 
 class MasseyOrdinal(Feature):
-    def __init__(self, ordinals_df, tourney_results, ref_system = 'POM'):
+    def __init__(self, ordinals_df, tourney_results, ref_system = 'POM', load=False):
         self.ordinals_df = ordinals_df
         self.tourney_results = tourney_results
         self.ref_system = ref_system
+        self.feature_save_path = 'data/features/MasseyOrdinal.csv'
+        self.load = load
 
     def make_features(self):
         # Get the last available data from each system previous to the tournament
         self.feature = self.ordinals_df.groupby(['SystemName','Season','TeamID']).last().reset_index().drop(columns='DayNum')    
         self.feature = self.feature.loc[self.feature.SystemName==self.ref_system]
+        self.feature.to_csv(self.feature_save_path, index=False)
 
     def merge_features(self):    
         # Add winner's ordinals
