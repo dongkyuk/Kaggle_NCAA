@@ -41,7 +41,7 @@ for season in range(2015, 2020):
     df['Pred'].loc[df['Season']==season] = df_test['Pred']
 
 
-# conservative = 0.0062
+# conservative = 0.01
 # df['Pred'].loc[df['Pred']>0.5 + conservative] -= conservative
 # df['Pred'].loc[df['Pred']<0.5 - conservative] += conservative
 
@@ -52,5 +52,15 @@ submission_df = submission_df.drop(['Pred'], axis = 1)
 submission_df = submission_df.merge(df, on = ['ID'], how = 'left')
 submission_df = submission_df[['ID', 'Pred']]
 
+last_winner = pd.read_csv('MPred_1.csv')
+submission_df['Pred'] = 0.2 * submission_df['Pred'] + 0.8 * last_winner['Pred']
+submission_df['Pred'] = last_winner['Pred']
+
+conservative = 0.001
+submission_df['Pred'].loc[submission_df['Pred']>0.5 + conservative] -= conservative
+submission_df['Pred'].loc[submission_df['Pred']<0.5 - conservative] += conservative
+
 print(submission_df)
+print(submission_df.info())
+
 submission_df.to_csv('submit.csv', index=False)

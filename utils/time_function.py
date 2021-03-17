@@ -5,7 +5,7 @@ import logging
 def time_function(func):
     @wraps(func)
     def wrapper(*args, **kwargs):
-        logging.info(f'{func.__name__} starting')
+        logging.info(f'{func.__qualname__} starting')
         start = time.time()
         result = func(*args, **kwargs)
         end = time.time()

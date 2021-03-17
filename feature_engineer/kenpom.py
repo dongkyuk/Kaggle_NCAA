@@ -10,7 +10,7 @@ class Kenpom(Feature):
 
     def make_features(self):
         # Get the last available data from each system previous to the tournament
-        self.feature = self.kenpom_df[['Season','TeamID', 'adj_em', 'rank', 'adj_o','adj_d', 'luck']]
+        self.feature = self.kenpom_df[['TeamName','Season','TeamID', 'adj_em', 'rank', 'adj_o','adj_d', 'luck']]
         self.feature.to_csv(self.feature_save_path, index=False)
 
     def merge_features(self):    
